@@ -9,9 +9,7 @@ using Symnity.Model.Mosaics;
 using Symnity.Model.Network;
 using Symnity.Model.Transactions;
 using Cysharp.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using Symnity.Core.Crypto;
-using Symnity.Http;
 using Symnity.Model.Lock;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -295,40 +293,6 @@ namespace Symnity.UnityScript
                 this.characterAddress = characterAddress;
                 this.floor = floor;
             }
-        }
-        
-        public static SignedTransaction FloorEscapeTransaction(int floorCount)
-        {
-            Debug.Log("Floor Escape: " + floorCount);
-            var EscapeMosaicId = "";
-            var message = JObject.FromObject(new ClearFloor(_characterAccount.Address.Plain(), floorCount)).ToString();
-            var deadLine = Deadline.Create(EpochAdjustment);
-            var transferTx = TransferTransaction.Create(
-                deadLine,
-                _playerAccount.Address,
-                new List<Mosaic> {new Mosaic(new MosaicId(EscapeMosaicId), 1)},
-                new Message(MessageType.PlainMessage, message),
-                _networkType
-            );
-            
-            var revokeTx = MosaicSupplyRevocationTransaction.Create(
-                deadLine,
-                _playerAccount.Address,
-                new Mosaic(new MosaicId(EscapeMosaicId), 1),
-                _networkType
-            );
-
-            var aggTx = AggregateTransaction.CreateComplete(
-                deadLine,
-                new List<Transaction>
-                {
-                    transferTx.ToAggregate(_adminAccount.GetPublicAccount()),
-                    revokeTx.ToAggregate(_adminAccount.GetPublicAccount())
-                },
-                _networkType,
-                new List<AggregateTransactionCosignature>()
-            ).SetMaxFeeForAggregate(100, 0);
-            return _adminAccount.Sign(aggTx, GenerationHash);
         }
         
         public static SignedTransaction AddCoinTransaction(long pointsToAdd, string message = "")

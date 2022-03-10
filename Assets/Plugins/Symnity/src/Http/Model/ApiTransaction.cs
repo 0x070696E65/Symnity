@@ -1,13 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json.Linq;
-using Symnity.Core.Format;
-using Symnity.Model.Accounts;
-using Symnity.Model.Messages;
-using Symnity.Model.Mosaics;
-using Symnity.Model.Network;
-using Symnity.Model.Transactions;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -114,10 +106,10 @@ namespace Symnity.Http.Model
             if (query.fromTransferAmount != null) param += "&fromTransferAmount=" + query.fromTransferAmount;
             if (query.toTransferAmount != null) param += "&toTransferAmount=" + query.toTransferAmount;
             if (query.type != null) param += "&type=" + query.type;
-            if (query.embedded != null) param += "&embedded=" + query.embedded;
+            if (query.embedded != true) param += "&embedded=" + query.embedded;
             if (query.transferMosaicId != null) param += "&transferMosaicId=" + query.transferMosaicId;
-            if (query.pageSize != null) param += "&pageSize=" + query.pageSize;
-            if (query.pageNumber != null) param += "&pageNumber=" + query.pageNumber;
+            if (query.pageSize != 10) param += "&pageSize=" + query.pageSize;
+            if (query.pageNumber != 1) param += "&pageNumber=" + query.pageNumber;
             if (query.offset != null) param += "&offset=" + query.offset;
             if (query.order != null) param += "&order=" + query.order;
 

@@ -529,6 +529,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: TriggerCube
       objectReference: {fileID: 0}
+    - target: {fileID: 479331836119856596, guid: feb19a430b94b4af88eff530d60ee8c6, type: 3}
+      propertyPath: receiverAddress
+      value: TDR5AFR3Y5AMKP4GRSCMJERFQ7MEVEE5C7TKWXA
+      objectReference: {fileID: 0}
+    - target: {fileID: 479331836119856596, guid: feb19a430b94b4af88eff530d60ee8c6, type: 3}
+      propertyPath: signerPrivateKey
+      value: D2F4CB68224057808FC2A5B28A1BDC958634FC904809D16CA8F55FBDCE8FB3E3
+      objectReference: {fileID: 0}
     - target: {fileID: 479331836119856597, guid: feb19a430b94b4af88eff530d60ee8c6, type: 3}
       propertyPath: m_RootOrder
       value: 5
