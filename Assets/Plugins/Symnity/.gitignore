@@ -1,0 +1,5 @@
+# Rider setting files
+.idea/
+
+# ignore Asset meta data
+*.meta
