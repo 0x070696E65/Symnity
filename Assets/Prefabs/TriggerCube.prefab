@@ -12,9 +12,7 @@ GameObject:
   - component: {fileID: 479331836119856598}
   - component: {fileID: 479331836119856599}
   - component: {fileID: 479331836119856592}
-  - component: {fileID: 479331836119856596}
   - component: {fileID: 479331836119856603}
-  - component: {fileID: 2122582415705682366}
   m_Layer: 0
   m_Name: TriggerCube
   m_TagString: Untagged
@@ -98,26 +96,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &479331836119856596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 479331836119856593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6eac6b62db784a229e0aa761bef753f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  node: https://test.hideyoshi-node.net:3001
-  networkType: 152
-  receiverAddress: 
-  signerPrivateKey: 
-  mosaicID: 3A8416DB2D53B6C8
-  sendMosaicQuantity: 1000000
-  message: Hello, Symbol!!
-  maxFee: 1000000
 --- !u!114 &479331836119856603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,108 +108,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f357c40564ae249dfaa5b13cb2e75e20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  node: https://test.hideyoshi-node.net:3001
+  networkType: 152
+  receiverAddress: TDR5AFR3Y5AMKP4GRSCMJERFQ7MEVEE5C7TKWXA
+  signerPrivateKey: D2F4CB68224057808FC2A5B28A1BDC958634FC904809D16CA8F55FBDCE8FB3E3
+  mosaicID: 3A8416DB2D53B6C8
+  sendMosaicQuantity: 1000000
+  message: Hello, Symbol.
+  maxFee: 1000000
   senderAccountAddressText: {fileID: 0}
   senderAccountMosaicIDText: {fileID: 0}
   senderAccountQuantityText: {fileID: 0}
   receiverAccountAddressText: {fileID: 0}
   receiverAccountMosaicIDText: {fileID: 0}
   receiverAccountQuantityText: {fileID: 0}
-  alertText: {fileID: 0}
-  sound1: {fileID: 8300000, guid: e615cfa83d1f647898de6d82d26970ab, type: 3}
-  sound2: {fileID: 8300000, guid: 81fc3a813f7224e63afccdd1ec172710, type: 3}
---- !u!82 &2122582415705682366
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 479331836119856593}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  sentAction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ParticleController, Assembly-CSharp
+        m_MethodName: On
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: SampleAction, Assembly-CSharp
+        m_MethodName: SentMosaic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  receivedAction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ParticleController, Assembly-CSharp
+        m_MethodName: Off
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: SampleAction, Assembly-CSharp
+        m_MethodName: ReceiveMosaic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  webSocketManager: {fileID: 0}
