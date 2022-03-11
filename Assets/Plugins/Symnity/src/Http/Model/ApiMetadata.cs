@@ -8,22 +8,22 @@ namespace Symnity.Http.Model
     [Serializable]
     public class ApiMetadata : MonoBehaviour
     {
-        public struct MetadataQueryParameters
+        public class MetadataQueryParameters
         {
-            public readonly string sourceAddress;
-            public readonly string targetAddress;
-            public readonly string scopedMetadataKey;
-            public readonly string targetId;
-            public readonly int metadataType;
-            public readonly int pageSize;
-            public readonly int pageNumber;
-            public readonly string offset;
-            public readonly string order;
+            public string sourceAddress;
+            public string targetAddress;
+            public string scopedMetadataKey;
+            public string targetId;
+            public int metadataType;
+            public int pageSize;
+            public int pageNumber;
+            public string offset;
+            public string order;
             public MetadataQueryParameters(
-                string sourceAddress = "",
-                string targetAddress = "",
-                string scopedMetadataKey = "",
-                string targetId = "",
+                string sourceAddress = null,
+                string targetAddress = null,
+                string scopedMetadataKey = null,
+                string targetId = null,
                 int metadataType = 0,
                 int pageSize = 10,
                 int pageNumber = 1,
@@ -47,17 +47,19 @@ namespace Symnity.Http.Model
         {
             var param = "?";
             if (query.sourceAddress != null) param += "&sourceAddress=" + query.sourceAddress;
-            if (query.targetAddress != null) param += "&sourceAddress=" + query.targetAddress;
-            if (query.scopedMetadataKey != null) param += "&sourceAddress=" + query.scopedMetadataKey;
-            if (query.targetId != null) param += "&sourceAddress=" + query.targetId;
-            if (query.metadataType != 0) param += "&sourceAddress=" + query.metadataType;
+            if (query.targetAddress != null) param += "&targetAddress=" + query.targetAddress;
+            if (query.scopedMetadataKey != null) param += "&scopedMetadataKey=" + query.scopedMetadataKey;
+            if (query.targetId != null) param += "&targetId=" + query.targetId;
+            if (query.metadataType != 0) param += "&metadataType=" + query.metadataType;
             if (query.pageSize != 10) param += "&pageSize=" + query.pageSize;
             if (query.pageNumber != 1) param += "&pageNumber=" + query.pageNumber;
             if (query.offset != null) param += "&offset=" + query.offset;
             if (query.order != null) param += "&order=" + query.order;
 
             var url = "/metadata" + param;
-            var accountRootData = await HttpUtiles.GetDataFromApiString(node, url);
+            Debug.Log(url);
+            
+            var accountRootData = await HttpUtiles.GetDataFromApiString(node, url); ;
             var root = JsonUtility.FromJson<MetadataRoot>(accountRootData);
             return root;
         }

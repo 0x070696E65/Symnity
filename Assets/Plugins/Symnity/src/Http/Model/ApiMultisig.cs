@@ -8,23 +8,29 @@ namespace Symnity.Http.Model
     [Serializable]
     public class ApiMultisig : MonoBehaviour
     {
-        public static async UniTask<MultisigInfo> GetMultisigAccountInfomation(string node, string address)
+        public static async UniTask<MultisigRoot> GetMultisigAccountInfomation(string node, string address)
         {
             var url = "/account/" + address + "/multisig";
             var multisigInfoStr = await HttpUtiles.GetDataFromApiString(node, url);
-            var multisigInfo = JsonUtility.FromJson<MultisigInfo>(multisigInfoStr);
+            var multisigInfo = JsonUtility.FromJson<MultisigRoot>(multisigInfoStr);
             return multisigInfo;
         }
-
+        
         [Serializable]
-        public class MultisigInfo
+        public class Multisig
         {
             public int version;
             public string accountAddress;
             public int minApproval;
             public int minRemoval;
-            public List<string> cosignatoryAddresses;
+            public List<object> cosignatoryAddresses;
             public List<string> multisigAddresses;
+        }
+
+        [Serializable]
+        public class MultisigRoot
+        {
+            public Multisig multisig;
         }
     }
 }

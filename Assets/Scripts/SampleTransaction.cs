@@ -64,6 +64,11 @@ public class SampleTransaction : MonoBehaviour
     
     private async void GetMosaicQuantity()
     {
+        var address = "TAIVS4GFLTZQVJGHCQD232Y3L5BSP2F27XRDBFQ";
+
+        var multisigRoot = await ApiMultisig.GetMultisigAccountInfomation(node, address);
+        Debug.Log(RawAddress.AddressToString(ConvertUtils.GetBytes(multisigRoot.multisig.multisigAddresses[0])));
+        
         var senderAccountInformation = await ApiAccount.GetAccountInformation(node, senderAccountAddress);
         senderAccountInformation.account.mosaics.ForEach(mosaic =>
         {

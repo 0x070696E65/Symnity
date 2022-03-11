@@ -18,12 +18,12 @@ namespace Symnity.Http.Model
         
         public class AccountQueryParameters
         {
-            public readonly int pageSize;
-            public readonly int pageNumber;
-            public readonly string offset;
-            public readonly string order;
-            public readonly string orderBy;
-            public readonly string mosaicId;
+            public int pageSize;
+            public int pageNumber;
+            public string offset;
+            public string order;
+            public string orderBy;
+            public string mosaicId;
 
             public AccountQueryParameters(
                 int pageSize = 10,

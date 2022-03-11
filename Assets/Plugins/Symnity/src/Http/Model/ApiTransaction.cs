@@ -17,21 +17,21 @@ namespace Symnity.Http.Model
 
         public class TransactionQueryParameters
         {
-            public readonly string address;
-            public readonly string recipientAddress;
-            public readonly string signerPublicKey;
-            public readonly string height;
-            public readonly string fromHeight;
-            public readonly string toHeight;
-            public readonly string fromTransferAmount;
-            public readonly string toTransferAmount;
-            public readonly List<int> type;
-            public readonly bool embedded;
-            public readonly string transferMosaicId;
-            public readonly int pageSize;
-            public readonly int pageNumber;
-            public readonly string offset;
-            public readonly string order;
+            public string address;
+            public string recipientAddress;
+            public string signerPublicKey;
+            public string height;
+            public string fromHeight;
+            public string toHeight;
+            public string fromTransferAmount;
+            public string toTransferAmount;
+            public List<int> type;
+            public bool embedded;
+            public string transferMosaicId;
+            public int pageSize;
+            public int pageNumber;
+            public string offset;
+            public string order;
 
             public TransactionQueryParameters(
                 string address = null,

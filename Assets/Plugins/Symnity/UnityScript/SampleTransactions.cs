@@ -16,34 +16,6 @@ using UnityEngine.Networking;
 
 namespace Symnity.UnityScript
 {
-    // 交換所にて注文を依頼する時のトランザクション（署名前）
-    // Transaction when requesting an order at the exchange (before signature)
-    // ->> CreateExchangeBuyTransaction <<-
-    
-    // 交換所にて注文を依頼する時のトランザクション（署名後）
-    // Transaction when requesting an order at the exchange (after signing)
-    // ->> CreateExchangeBuySignedTransaction <<-
-    
-    // 交換所にて依頼を受ける時のトランザクション
-    // Transactions when receiving requests at the exchange
-    // ->> CreateExchangeSellTransaction <<-
-    
-    // ゲーム開始時にプレイヤーアカウントにキャラクターアカウント付与（メタデータ初期）
-    // Character account assigned to the player account at the start of the game (initial metadata)
-    // ->> MultisigAndMetadataAggregateTransaction <<-
-    
-    // Revocableモザイク没収トランザクション
-    // Revocable Mosaic Confiscation Transaction
-    // ->> MosaicRevocationTransaction <<-
-    
-    // ダンジョン脱出時のトランザクション
-    // Transactions during dungeon escape
-    // ->> FloorEscapeTransaction <<-
-    
-    // コイン送信トランザクション（ただのTransferTransaction）
-    // Coin Transfer Transaction (just TransferTransaction)
-    // ->> AddCoinTransaction <<-
-    
     [Serializable]
     public class SampleTransactions : MonoBehaviour
     {
@@ -59,95 +31,6 @@ namespace Symnity.UnityScript
         private const string CharacterAccountPrivateKey = "";
         private static Account _characterAccount = Account.CreateFromPrivateKey(CharacterAccountPrivateKey, _networkType);
         
-        
-        private static SignedTransaction CreateExchangeBuySignedTransaction(AggregateTransaction aggTx,
-            Account buyAccount)
-        {
-            var signedTransactionComplete = buyAccount.SignTransactionWithCosignatories(
-                aggTx,
-                new List<Account>{_adminAccount},
-                GenerationHash
-            );
-            return signedTransactionComplete;
-        }
-
-        public class ExchangeSellTransaction
-        {
-            private long Fee;
-            private SignedTransaction SignedTransaction;
-
-            public ExchangeSellTransaction(long fee, SignedTransaction signedTransaction)
-            {
-                Fee = fee;
-                SignedTransaction = signedTransaction;
-            }
-        }
-
-        // 疑似取引所購入意思表示トランザクション
-        public static ExchangeSellTransaction CreateExchangeSellTransaction(string sellPrivateKey,
-            string exchangePublicKey, string buyMosaicId, int buyAmount, string sellMosaicId, int sellAmount,
-            int durationBlock)
-        {
-            var deadLine = Deadline.Create(EpochAdjustment);
-            var sellAccount = Account.CreateFromPrivateKey(sellPrivateKey, _networkType);
-            var exchangePublicAccount = PublicAccount.CreateFromPublicKey(exchangePublicKey, _networkType);
-
-            var random = Crypto.RandomBytes(20);
-            var proof = ConvertUtils.ToHex(random);
-            var hasher = SHA3Hasher.CreateHasher(32);
-            var array = new byte[32];
-            hasher.Hasher.BlockUpdate(random, 0, random.Length);
-            hasher.Hasher.DoFinal(array, 0);
-            var secret = ConvertUtils.ToHex(array).ToUpper();
-
-            var order = new OrderMosaic(buyMosaicId, buyAmount);
-            var json = JsonUtility.ToJson(order);
-
-            var coinLockTx = SecretLockTransaction.Create(
-                deadLine,
-                new Mosaic(new MosaicId(sellMosaicId), sellAmount),
-                new BlockDuration(durationBlock),
-                LockHashAlgorithm.Op_Sha3_256,
-                secret,
-                exchangePublicAccount.Address,
-                _networkType
-            );
-
-            var proofTx = TransferTransaction.Create(
-                deadLine,
-                exchangePublicAccount.Address,
-                new List<Mosaic>(),
-                sellAccount.EncryptMessage(proof, exchangePublicAccount),
-                _networkType
-            );
-            var infoTx = TransferTransaction.Create(
-                deadLine,
-                exchangePublicAccount.Address,
-                new List<Mosaic>(),
-                PlainMessage.Create(json),
-                _networkType
-            );
-
-            var aggTx = AggregateTransaction.CreateComplete(
-                deadLine,
-                new List<Transaction>
-                {
-                    coinLockTx.ToAggregate(sellAccount.GetPublicAccount()),
-                    proofTx.ToAggregate(sellAccount.GetPublicAccount()),
-                    infoTx.ToAggregate(sellAccount.GetPublicAccount())
-                },
-                _networkType,
-                new List<AggregateTransactionCosignature>()
-            ).SetMaxFeeForAggregate(100, 0);
-
-            var aggTxSigned = sellAccount.Sign(
-                aggTx,
-                GenerationHash
-            );
-            Debug.Log(aggTxSigned.Hash);
-            return new ExchangeSellTransaction(aggTx.MaxFee, aggTxSigned);
-        }
-
         public class Order
         {
             private string Id;
@@ -351,36 +234,6 @@ namespace Symnity.UnityScript
             var signedTx = _adminAccount.Sign(transferTransaction, GenerationHash);
             return signedTx;
         }
-
-        // アカウントデータ取得
-        /*var accountData = ApiAccount.CreateAccountFromApi("TAIVS4GFLTZQVJGHCQD232Y3L5BSP2F27XRDBFQ");
-        var mosaicId = new MosaicId("65DBB4CC472A5734");
-        Console.WriteLine(accountData.address.Plain());
-        var mosaic = accountData.mosaics.Where(mosaic=>mosaic.Id.GetId() == mosaicId.GetId());
-        Console.WriteLine(mosaic.ToList()[0].Amount);*/
-
-        // トランザクションデータ取得
-        /*var transactionData = ApiTransaction.CreateTransferTransactionFromApi("97E74C42E4DB83684011B4D29ADA6A5EDF03A87173D6635A8EA7B97CA6988088");
-        Console.WriteLine(transactionData.RecipientAddress.Plain());
-        Console.WriteLine(transactionData.Message.Payload);
-        Console.WriteLine(transactionData.MaxFee);*/
-
-        // メタデータ取得
-        /*var metadataSearchCriteria = new ApiMetadata.MetadataSearchCriteria(
-            MetadataType.Account,
-            "TAIVS4GFLTZQVJGHCQD232Y3L5BSP2F27XRDBFQ",
-            "19670280EC3E4E7D",
-            "TCOHSBNTWYNFUWP2PLGSGDK6EWE4BC5TFZNQBLI"
-        );
-        var metadataData = ApiMetadata.CreateMetadataFromApi(metadataSearchCriteria);
-        Console.WriteLine(ConvertUtils.HexToChar(metadataData.metadataEntry.value));*/
-
-        // マルチシグデータ取得
-        /*var multisigData = ApiMultisig.CreateAccountFromApi("TAIVS4GFLTZQVJGHCQD232Y3L5BSP2F27XRDBFQ");
-        multisigData.multisigAddresses.ForEach(multisigAddress=>
-        {
-            Console.WriteLine(RawAddress.AddressToString(ConvertUtils.GetBytes(multisigAddress)));
-        });*/
     }
     
     public class Order
