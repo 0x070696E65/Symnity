@@ -79,11 +79,12 @@ https://symbol.github.io/symbol-openapi/v1.0.3/
 ```c#
 var Node = "NODE_URL";
 Debug.Log("--アカウントデータ取得--");
-var accountData = await ApiAccount.GetAccountInformation(Node, "TAIVS4GFLTZQVJGHCQD232Y3L5BSP2F27XRDBFQ");
-var mosaicId = new MosaicId("3A8416DB2D53B6C8");
-Debug.Log(accountData.address.Plain());
-var mosaic = accountData.account.mosaics..Where(mosaic=>mosaic.Id.GetId() == mosaicId.GetId());
-Debug.Log(mosaic.ToList()[0].Amount);
+var accountData = await ApiAccount.GetAccountInformation(node, "TAIVS4GFLTZQVJGHCQD232Y3L5BSP2F27XRDBFQ");
+Debug.Log(RawAddress.AddressToString(ConvertUtils.GetBytes(accountData.account.address)));
+
+var mosaicId = "3A8416DB2D53B6C8";
+var mosaic = accountData.account.mosaics.Where(mosaic=>mosaic.id == mosaicId);
+Debug.Log(mosaic.ToList()[0].amount);
 
 Debug.Log("--アカウントデータ検索--");
 var acountQueryParameters = new ApiAccount.AccountQueryParameters
