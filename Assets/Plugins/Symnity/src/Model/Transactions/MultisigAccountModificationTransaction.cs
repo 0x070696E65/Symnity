@@ -148,7 +148,7 @@ namespace Symnity.Model.Transactions
             var addressDeletionsDto = new List<UnresolvedAddressDto> { };
             AddressDeletions.ForEach(address =>
             {
-                addressAdditionsDto.Add(new UnresolvedAddressDto(address.EncodeUnresolvedAddress()));
+                addressDeletionsDto.Add(new UnresolvedAddressDto(address.EncodeUnresolvedAddress()));
             });
             return new MultisigAccountModificationTransactionBuilder(
                 GetSignatureAsBuilder(),
