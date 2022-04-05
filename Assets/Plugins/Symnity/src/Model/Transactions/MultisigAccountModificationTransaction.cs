@@ -50,8 +50,8 @@ namespace Symnity.Model.Transactions
             byte version,
             Deadline deadline,
             long maxFee,
-            byte minApprovalDelta,
-            byte minRemovalDelta,
+            sbyte minApprovalDelta,
+            sbyte minRemovalDelta,
             List<UnresolvedAddress> addressAdditions,
             List<UnresolvedAddress> addressDeletions,
             string signature = null,
@@ -60,8 +60,8 @@ namespace Symnity.Model.Transactions
         ) : base(TransactionType.MULTISIG_ACCOUNT_MODIFICATION, networkType, version, deadline, maxFee, signature,
             signer, transactionInfo)
         {
-            MinApprovalDelta = minApprovalDelta;
-            MinRemovalDelta = minRemovalDelta;
+            MinApprovalDelta = (byte)minApprovalDelta;
+            MinRemovalDelta = (byte)minRemovalDelta;
             AddressAdditions = addressAdditions;
             AddressDeletions = addressDeletions;
         }
@@ -81,8 +81,8 @@ namespace Symnity.Model.Transactions
          */
         public static MultisigAccountModificationTransaction Create(
             Deadline deadline,
-            byte minApprovalDelta,
-            byte minRemovalDelta,
+            sbyte minApprovalDelta,
+            sbyte minRemovalDelta,
             List<UnresolvedAddress> addressAdditions,
             List<UnresolvedAddress> addressDeletions,
             NetworkType networkType,
