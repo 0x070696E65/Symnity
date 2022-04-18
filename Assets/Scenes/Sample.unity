@@ -351,6 +351,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 479331836119856603, guid: feb19a430b94b4af88eff530d60ee8c6, type: 3}
+      propertyPath: node
+      value: https://hideyoshi.mydns.jp:3001
+      objectReference: {fileID: 0}
+    - target: {fileID: 479331836119856603, guid: feb19a430b94b4af88eff530d60ee8c6, type: 3}
       propertyPath: webSocketManager
       value: 
       objectReference: {fileID: 536984134}
