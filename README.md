@@ -18,7 +18,7 @@ SymnityはUnityでブロックチェーンであるSymbolを利用するため�
 コードを書いて使われる場合は以下を参考にしてください。
 
 # Installation
-ReleaseよりSymnity.unitypackageをダウンロードし、プロジェクトのAssetフォルダにて展開してください。
+<a href="https://github.com/0x070696E65/Symnity/releases">Release</a>よりSymnity.unitypackageをダウンロードし、プロジェクトのAssetフォルダにて展開してください。
 
 # Usage
 基本的な構文はTypeScript版Symbol-SDKと同じようにしています。ただし、メソッドの最初の一文字は大文字です。
