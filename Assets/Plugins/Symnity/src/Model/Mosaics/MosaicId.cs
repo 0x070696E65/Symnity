@@ -79,9 +79,9 @@ namespace Symnity.Model.Mosaics
         *
         * @return Hex id.
         */
-        public string GetIdAsHex() {
-            var bytes = GetId().ToByteArray();
-            return ConvertUtils.ToHex(bytes);
+        public string GetIdAsHex()
+        {
+            return GetId().ToString("X");
         }
     }
 }

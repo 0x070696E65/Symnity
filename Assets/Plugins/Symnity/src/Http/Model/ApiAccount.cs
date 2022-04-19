@@ -76,6 +76,12 @@ namespace Symnity.Http.Model
         {
             public string publicKey;
         }
+        
+        [Serializable]
+        public class Voting
+        {
+            public List<string> keys;
+        }
 
         [Serializable]
         public class SupplementalPublicKeys
@@ -83,6 +89,7 @@ namespace Symnity.Http.Model
             public Linked linked;
             public Node node;
             public Vrf vrf;
+            public List<Voting> voting;
         }
 
         [Serializable]

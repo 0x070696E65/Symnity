@@ -17,7 +17,7 @@ namespace Symnity.Model.Accounts
          */
         public int endEpoch;
 
-        AccountLinkVotingKey(
+        public AccountLinkVotingKey(
             string publicKey,
             int startEpoch,
             int endEpoch

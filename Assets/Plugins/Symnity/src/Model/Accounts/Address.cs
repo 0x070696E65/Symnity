@@ -64,6 +64,15 @@ namespace Symnity.Model.Accounts
         }
         
         /**
+         * Create an Address from a given encoded address.
+         * @param {string} encoded address. Expected format: 9085215E4620D383C2DF70235B9EF7607F6A28EF6D16FD7B9C.
+         * @return {Address}
+         */
+        public static Address CreateFromEncoded(string encoded) {
+            return CreateFromRawAddress(RawAddress.AddressToString(ConvertUtils.GetBytes(encoded)));
+        }
+        
+        /**
          * Get address in the encoded format ex: NAR3W7B4BCOZSZMFIZRYB3N5YGOUSWIYJCJ6HDFH.
          * @returns {string}
          */
