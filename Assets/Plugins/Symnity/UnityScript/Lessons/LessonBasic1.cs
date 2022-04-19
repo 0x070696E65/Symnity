@@ -24,7 +24,7 @@ public class LessonBasic1 : MonoBehaviour
     {
         var address = Address.CreateFromRawAddress(addressInputField.text);
         var mosaicId = mosaicIdInputField.text;
-        var accountInfo = await accountRepository.GetAccountInformation(address.Plain());
+        var accountInfo = await accountRepository.GetAccountInformation(address);
         var mosaic = accountInfo.mosaics.Select(mosaic => mosaic.Id.GetIdAsHex() == mosaicId ? mosaic : null);
         mosaicAmount.text = mosaic.ToList()[0].Amount.ToString();
     }

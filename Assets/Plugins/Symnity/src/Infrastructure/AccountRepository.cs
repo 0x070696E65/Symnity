@@ -18,9 +18,9 @@ namespace Plugins.Symnity.src.Repositories
             Node = node;
         }
 
-        public async UniTask<AccountInfo> GetAccountInformation(string accountId)
+        public async UniTask<AccountInfo> GetAccountInformation(Address address)
         {
-            var info = await ApiAccount.GetAccountInformation(Node, accountId);
+            var info = await ApiAccount.GetAccountInformation(Node, address.Plain());
             var mosaics = new List<Mosaic>();
             info.account.mosaics.ForEach(mosaic =>
             {
