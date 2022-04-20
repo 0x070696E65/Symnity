@@ -15,7 +15,7 @@ namespace Symnity.Model.Messages
         public readonly MessageType Type;
 
         /**
-         * Message payload, it could be the message hex, encryped text or plain text depending on the message type.
+         * Message payload, it could be the message hex, encrypted text or plain text depending on the message type.
          */
         public readonly string Payload;
         

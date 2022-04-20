@@ -86,7 +86,7 @@ namespace Symnity.Model.Transactions
          */
         public TransferTransaction(
             NetworkType networkType, byte version, Deadline deadline, long maxFee,
-            UnresolvedAddress recipientAddress, List<Mosaic> mosaics, Message message, string signature = null,
+            UnresolvedAddress recipientAddress, List<Mosaic> mosaics, Message message = null, string signature = null,
             PublicAccount signer = null, TransactionInfo transactionInfo = null
             )
             : base(TransactionType.TRANSFER, networkType, version, deadline, maxFee, signature, signer,
@@ -112,7 +112,7 @@ namespace Symnity.Model.Transactions
          * @returns {Uint8Array}
          */
         public byte[] GetMessageBuffer() {
-            if (Message == null || Message.Payload == null) {
+            if (Message == null || Message.Payload == "") {
                 return new byte[0];
             }
             var messgeHex = Message.Type == MessageType.PersistentHarvestingDelegationMessage

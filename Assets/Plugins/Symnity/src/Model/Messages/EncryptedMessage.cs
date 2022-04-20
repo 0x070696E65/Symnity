@@ -29,6 +29,18 @@ namespace Symnity.Model.Messages
         }
         
         /**
+         * It creates a encrypted message from the payload hex wihtout the 01 prefix.
+         *
+         * The 01 prefix will be attached to the final payload.
+         *
+         * @internal
+         * @param payload
+         */
+        public static EncryptedMessage CreateFromPayload(string payload) {
+            return new EncryptedMessage(DecodeHex(payload));
+        }
+        
+        /**
          *
          * @param encryptMessage - Encrypted message to be decrypted
          * @param privateKey - Recipient private key
