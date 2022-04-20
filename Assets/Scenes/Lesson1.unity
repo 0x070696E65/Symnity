@@ -1253,10 +1253,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbe18f4b0e2ec4101a209e52b0dc3ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lesson1Button: {fileID: 0}
-  addressInputField: {fileID: 0}
-  mosaicIdInputField: {fileID: 0}
-  mosaicAmount: {fileID: 0}
+  lesson1Button: {fileID: 2116506469}
+  addressInputField: {fileID: 807877174}
+  mosaicIdInputField: {fileID: 1596802676}
+  mosaicAmount: {fileID: 1649589508}
 --- !u!1 &969384427
 GameObject:
   m_ObjectHideFlags: 0

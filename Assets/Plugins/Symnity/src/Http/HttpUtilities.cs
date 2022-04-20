@@ -7,7 +7,7 @@ using Symnity.Http.Model;
 
 namespace Symnity.Http
 {
-    public class HttpUtiles : MonoBehaviour
+    public class HttpUtilities : MonoBehaviour
     {
         public static async UniTask<string> Announce(string nodeUrl, string payload)
         {
@@ -17,6 +17,7 @@ namespace Symnity.Http
                 var myData = Encoding.UTF8.GetBytes("{ \"payload\" : \"" + payload + "\"}");
                 var webRequest = UnityWebRequest.Put(url, myData);
                 webRequest.SetRequestHeader("Content-Type", "application/json");
+                webRequest.downloadHandler = new DownloadHandlerBuffer();
                 await webRequest.SendWebRequest();
                 if (webRequest.result == UnityWebRequest.Result.ProtocolError)
                 {
@@ -24,12 +25,12 @@ namespace Symnity.Http
                     throw new Exception(webRequest.error);
                 }
                 webRequest.Dispose();
+                return webRequest.downloadHandler.text;
             }
             catch (Exception e)
             {
-                Debug.Log(e.ToString());
+                throw new Exception("announce error: " + e.Message);
             }
-            return "Upload complete!";
         }
         
         public static async UniTask<string> GetDataFromApiString(string node, string param)

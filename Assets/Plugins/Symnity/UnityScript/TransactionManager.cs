@@ -23,10 +23,10 @@ namespace Symnity.UnityScript
             int maxFee
         )
         {
-            var epocAdjustment = await HttpUtiles.GetEpochAdjustment(node);
+            var epocAdjustment = await HttpUtilities.GetEpochAdjustment(node);
             var deadline = Deadline.Create(epocAdjustment);
             var address = Address.CreateFromRawAddress(receiverAddress);
-            var generationHash = await HttpUtiles.GetGenerationHash(node);
+            var generationHash = await HttpUtilities.GetGenerationHash(node);
 
             var tx = TransferTransaction.Create(
                 deadline,

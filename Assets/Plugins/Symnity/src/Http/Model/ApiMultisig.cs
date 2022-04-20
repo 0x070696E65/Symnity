@@ -11,7 +11,7 @@ namespace Symnity.Http.Model
         public static async UniTask<MultisigRoot> GetMultisigAccountInfomation(string node, string address)
         {
             var url = "/account/" + address + "/multisig";
-            var multisigInfoStr = await HttpUtiles.GetDataFromApiString(node, url);
+            var multisigInfoStr = await HttpUtilities.GetDataFromApiString(node, url);
             var multisigInfo = JsonUtility.FromJson<MultisigRoot>(multisigInfoStr);
             return multisigInfo;
         }

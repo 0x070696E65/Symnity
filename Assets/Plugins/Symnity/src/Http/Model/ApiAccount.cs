@@ -11,7 +11,7 @@ namespace Symnity.Http.Model
         public static async UniTask<AccountDatum> GetAccountInformation(string node, string accountId)
         {
             var url = "/accounts/" + accountId;
-            var accountDatumStr = await HttpUtiles.GetDataFromApiString(node, url);
+            var accountDatumStr = await HttpUtilities.GetDataFromApiString(node, url);
             var accountDatum = JsonUtility.FromJson<AccountDatum>(accountDatumStr);
             return accountDatum;
         }
@@ -54,7 +54,7 @@ namespace Symnity.Http.Model
             if (query.mosaicId != null) param += "&mosaicId=" + query.mosaicId;
 
             var url = "/accounts" + param;
-            var accountRootData = await HttpUtiles.GetDataFromApiString(node, url);
+            var accountRootData = await HttpUtilities.GetDataFromApiString(node, url);
             var root = JsonUtility.FromJson<AccountRoot>(accountRootData);
             return root;
         }

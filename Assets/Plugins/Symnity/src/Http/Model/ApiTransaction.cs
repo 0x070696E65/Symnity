@@ -10,7 +10,7 @@ namespace Symnity.Http.Model
         public static async UniTask<Datum> GetConfirmedTransaction(string node, string hash)
         {
             var url = "/transactions/confirmed/" + hash;
-            var transactionRootData = await HttpUtiles.GetDataFromApiString(node, url);
+            var transactionRootData = await HttpUtilities.GetDataFromApiString(node, url);
             var root = JsonUtility.FromJson<Datum>(transactionRootData);
             return root;
         }
@@ -90,7 +90,7 @@ namespace Symnity.Http.Model
 
             var url = "/transactions/confirmed" + param;
             Debug.Log(url);
-            var transactionRootData = await HttpUtiles.GetDataFromApiString(node, url);
+            var transactionRootData = await HttpUtilities.GetDataFromApiString(node, url);
             var root = JsonUtility.FromJson<Root>(transactionRootData);
             return root;
         }
@@ -114,7 +114,7 @@ namespace Symnity.Http.Model
             if (query.order != null) param += "&order=" + query.order;
 
             var url = "/transactions/unconfirmed" + param;
-            var transactionRootData = await HttpUtiles.GetDataFromApiString(node, url);
+            var transactionRootData = await HttpUtilities.GetDataFromApiString(node, url);
             var root = JsonUtility.FromJson<Root>(transactionRootData);
             return root;
         }
@@ -122,7 +122,7 @@ namespace Symnity.Http.Model
         public static async UniTask<Datum> GetUnConfirmedTransaction(string node, string id)
         {
             var url = "/transactions/unconfirmed/" + id;
-            var datumString = await HttpUtiles.GetDataFromApiString(node, url);
+            var datumString = await HttpUtilities.GetDataFromApiString(node, url);
             return JsonUtility.FromJson<Datum>(datumString);
         }
 

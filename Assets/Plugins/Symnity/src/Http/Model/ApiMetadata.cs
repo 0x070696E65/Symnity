@@ -59,7 +59,7 @@ namespace Symnity.Http.Model
             var url = "/metadata" + param;
             Debug.Log(url);
             
-            var accountRootData = await HttpUtiles.GetDataFromApiString(node, url); ;
+            var accountRootData = await HttpUtilities.GetDataFromApiString(node, url); ;
             var root = JsonUtility.FromJson<MetadataRoot>(accountRootData);
             return root;
         }

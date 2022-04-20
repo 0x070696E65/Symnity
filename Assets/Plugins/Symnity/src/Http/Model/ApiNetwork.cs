@@ -10,7 +10,7 @@ namespace Symnity.Http.Model
         public static async UniTask<NetworkRoot> GetTheNetworkProperties(string node)
         {
             const string url = "/network/properties";
-            var networkRootStr = await HttpUtiles.GetDataFromApiString(node, url);
+            var networkRootStr = await HttpUtilities.GetDataFromApiString(node, url);
             var networkRoot = JsonUtility.FromJson<NetworkRoot>(networkRootStr);
             return networkRoot;
         }

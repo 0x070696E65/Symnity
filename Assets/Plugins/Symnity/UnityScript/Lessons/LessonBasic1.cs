@@ -16,7 +16,7 @@ public class LessonBasic1 : MonoBehaviour
 
     private void Start()
     {
-        accountRepository = new AccountRepository("NODE_URL");
+        accountRepository = new AccountRepository("https://hideyoshi.mydns.jp:3001");
         lesson1Button.onClick.AddListener(GetMosaic);
     }
     

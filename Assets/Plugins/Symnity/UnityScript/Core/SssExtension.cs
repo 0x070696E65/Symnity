@@ -10,6 +10,7 @@ using Symnity.Model.Mosaics;
 using Symnity.Model.Network;
 using Symnity.Model.Transactions;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Symnity.UnityScript
 {
@@ -45,7 +46,7 @@ namespace Symnity.UnityScript
             };
         }
 
-        public string m_Node;
+        public string node;
         public string callbackGameObjectName;
         public string callbackFunctionName;
         public string callBackPayload;
@@ -62,7 +63,7 @@ namespace Symnity.UnityScript
 
         public void AnnounceTransaction(Transaction transaction, string node)
         {
-            m_Node = node;
+            this.node = node;
             var excuse = new NativeExcuse();
             var callbackParameter = new SssExtension(
                 callbackGameObjectName = gameObject.name,
@@ -76,7 +77,7 @@ namespace Symnity.UnityScript
 
         public async void Announce(string payload)
         {
-            var result = await HttpUtiles.Announce(m_Node, payload);
+            var result = await HttpUtilities.Announce(node, payload);
             Debug.Log(result);
         }
 

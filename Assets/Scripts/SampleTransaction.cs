@@ -59,7 +59,7 @@ public class SampleTransaction : MonoBehaviour
         webSocketManager.Connect(node, WebSocketManager.WebSocketType.Confirmed, receiverAddress, receivedAction);
         var signedTransferTransaction = await TransactionManager.CreateSignedTransferTransaction(node, networkType, receiverAddress, signerPrivateKey,
             mosaicID, sendMosaicQuantity, message, maxFee);
-        HttpUtiles.Announce(node, signedTransferTransaction.Payload).Forget();
+        HttpUtilities.Announce(node, signedTransferTransaction.Payload).Forget();
         sentAction.Invoke();
     }
     
