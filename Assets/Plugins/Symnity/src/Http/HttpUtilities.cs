@@ -24,8 +24,9 @@ namespace Symnity.Http
                     //エラー確認
                     throw new Exception(webRequest.error);
                 }
+                var result = webRequest.downloadHandler.text;
                 webRequest.Dispose();
-                return webRequest.downloadHandler.text;
+                return result;
             }
             catch (Exception e)
             {
