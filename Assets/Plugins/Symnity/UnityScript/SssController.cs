@@ -56,7 +56,7 @@ namespace Symnity.UnityScript
                 NetworkType.TEST_NET,
                 new List<AggregateTransactionCosignature>() { }
             ).SetMaxFeeForAggregate(100, 0);
-            sss.AnnounceTransaction(aggTx, "https://hideyoshi.mydns.jp:3001");
+            sss.AnnounceTransaction(aggTx, "https://hideyoshi.mydns.jp:3001", SssMethodType.Announce);
         }
     }
 }

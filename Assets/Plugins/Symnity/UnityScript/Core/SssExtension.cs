@@ -1,16 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Runtime.InteropServices;
-using Cysharp.Threading.Tasks;
 using Symnity.Http;
-using Symnity.Model.Accounts;
-using Symnity.Model.Messages;
-using Symnity.Model.Mosaics;
 using Symnity.Model.Network;
 using Symnity.Model.Transactions;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Symnity.UnityScript
 {
@@ -61,13 +54,18 @@ namespace Symnity.UnityScript
             this.transactionType = transactionType;
         }
 
-        public void AnnounceTransaction(Transaction transaction, string node)
+        public void AnnounceTransaction(Transaction transaction, string node, SssMethodType methodType)
         {
             this.node = node;
+            var method = methodType switch
+            {
+                SssMethodType.Announce => "Announce",
+                _ => throw new ArgumentOutOfRangeException(nameof(methodType), methodType, null)
+            };
             var excuse = new NativeExcuse();
             var callbackParameter = new SssExtension(
                 callbackGameObjectName = gameObject.name,
-                callbackFunctionName = "Announce",
+                callbackFunctionName = method,
                 callBackPayload = transaction.Serialize(),
                 transactionType = GetCallbackTransactionType(transaction.Type)
             );
@@ -80,7 +78,7 @@ namespace Symnity.UnityScript
             var result = await HttpUtilities.Announce(node, payload);
             Debug.Log(result);
         }
-
+        
         private string GetCallbackTransactionType(TransactionType type)
         {
             var result = type switch
@@ -117,5 +115,9 @@ namespace Symnity.UnityScript
             };
             return result;
         }
+    }
+    public enum SssMethodType
+    {
+        Announce
     }
 }
