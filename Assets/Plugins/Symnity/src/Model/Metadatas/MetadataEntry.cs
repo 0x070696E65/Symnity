@@ -45,7 +45,7 @@ namespace Symnity.Model.Metadatas
         /**
          * The target mosaic or namespace identifier
          */
-        public Id targetId;
+        public MosaicId targetId;
 
         /**
         * Constructor
@@ -66,7 +66,7 @@ namespace Symnity.Model.Metadatas
             BigInteger scopedMetadataKey,
             MetadataType metadataType,
             string value,
-            Id targetId = null
+            MosaicId targetId = null
         )
         {
             this.version = version;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Symnity.Infrastructure.SearchCriteria;
 using UnityEngine;
 
 namespace Symnity.Http.Model
@@ -8,57 +9,30 @@ namespace Symnity.Http.Model
     [Serializable]
     public class ApiMetadata : MonoBehaviour
     {
-        public class MetadataQueryParameters
+        public static async UniTask<MetadataDatum> GetMetadataInformation(string node, string compositeHash, bool log = false)
         {
-            public string sourceAddress;
-            public string targetAddress;
-            public string scopedMetadataKey;
-            public string targetId;
-            public int metadataType;
-            public int pageSize;
-            public int pageNumber;
-            public string offset;
-            public string order;
-            public MetadataQueryParameters(
-                string sourceAddress = null,
-                string targetAddress = null,
-                string scopedMetadataKey = null,
-                string targetId = null,
-                int metadataType = 0,
-                int pageSize = 10,
-                int pageNumber = 1,
-                string offset = null,
-                string order = null
-            )
-            {
-                this.sourceAddress = sourceAddress;
-                this.targetAddress = targetAddress;
-                this.scopedMetadataKey = scopedMetadataKey;
-                this.targetId = targetId;
-                this.metadataType = metadataType;
-                this.pageSize = pageSize;
-                this.pageNumber = pageNumber;
-                this.offset = offset;
-                this.order = order;
-            }
+            var url = "/metadata/" + compositeHash;
+            if(log) Debug.Log($@"<a href=""{node}{url}"">{node}{url}</a>");
+            var metadataDatumStr = await HttpUtilities.GetDataFromApiString(node, url);
+            var metadataDatum = JsonUtility.FromJson<MetadataDatum>(metadataDatumStr);
+            return metadataDatum;
         }
         
-        public static async UniTask<MetadataRoot> SearchMetadata(string node, MetadataQueryParameters query)
+        public static async UniTask<MetadataRoot> SearchMetadata(string node, MetadataSearchCriteria query)
         {
             var param = "?";
-            if (query.sourceAddress != null) param += "&sourceAddress=" + query.sourceAddress;
-            if (query.targetAddress != null) param += "&targetAddress=" + query.targetAddress;
-            if (query.scopedMetadataKey != null) param += "&scopedMetadataKey=" + query.scopedMetadataKey;
-            if (query.targetId != null) param += "&targetId=" + query.targetId;
-            if (query.metadataType != 0) param += "&metadataType=" + query.metadataType;
-            if (query.pageSize != 10) param += "&pageSize=" + query.pageSize;
-            if (query.pageNumber != 1) param += "&pageNumber=" + query.pageNumber;
-            if (query.offset != null) param += "&offset=" + query.offset;
-            if (query.order != null) param += "&order=" + query.order;
-
+            if (query.SourceAddress != null) param += "&sourceAddress=" + query.SourceAddress.Plain();
+            if (query.TargetAddress != null) param += "&targetAddress=" + query.TargetAddress.Plain();
+            if (query.ScopedMetadataKey != null) param += "&scopedMetadataKey=" + query.ScopedMetadataKey;
+            if (query.TargetId != null) param += "&targetId=" + query.TargetId.GetIdAsHex();
+            if (query.MetadataType != 0) param += "&metadataType=" + query.MetadataType;
+            if (query.PageSize != 20) param += "&pageSize=" + query.PageSize;
+            if (query.PageNumber != 1) param += "&pageNumber=" + query.PageNumber;
+            if (query.Offset != null) param += "&offset=" + query.Offset;
+            var order = query.Order == Order.Asc ? "asc" : "desc";
+            param += "&order=" + order;
             var url = "/metadata" + param;
-            Debug.Log(url);
-            
+            Debug.Log($@"<a href=""{node}{url}"">{node}{url}</a>");
             var accountRootData = await HttpUtilities.GetDataFromApiString(node, url); ;
             var root = JsonUtility.FromJson<MetadataRoot>(accountRootData);
             return root;
