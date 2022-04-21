@@ -18,9 +18,14 @@ namespace Symnity.Infrastructure
             Node = node;
         }
 
-        public async UniTask<AccountInfo> GetAccountInformation(Address address)
+        public async UniTask<AccountInfo> GetAccountInfo(Address address)
         {
             var info = await ApiAccount.GetAccountInformation(Node, address.Plain());
+            return GetAccountInformation(info);
+        }
+
+        private static AccountInfo GetAccountInformation(ApiAccount.AccountDatum info)
+        {
             var mosaics = new List<Mosaic>();
             info.account.mosaics.ForEach(mosaic =>
             {
@@ -89,7 +94,7 @@ namespace Symnity.Infrastructure
         public async UniTask<Page<AccountInfo>> Search(AccountSearchCriteria searchCriteria)
         {
             var result = await ApiAccount.SearchAccounts(Node, searchCriteria);
-            var list = (await result.data.Select(async datum => await GetAccountInformation(Address.CreateFromEncoded(datum.account.address)))).ToList();
+            var list = result.data.Select(GetAccountInformation).ToList();
             return new Page<AccountInfo>(
                 list,
                 result.pagination.pageNumber,
