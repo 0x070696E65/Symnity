@@ -37,9 +37,7 @@ namespace Symnity.Model.Transactions
         public BigInteger Timestamp;
 
         public byte FeeMultiplier;
-
-        public Transaction Transaction;
-
+        
         /**
         * @param height
         * @param index
@@ -47,7 +45,7 @@ namespace Symnity.Model.Transactions
         * @param hash
         * @param merkleComponentHash
         */
-        public TransactionInfo(uint height, int index, string id, string hash, string merkleComponentHash, Transaction transaction, byte feeMultiplier, BigInteger timestamp)
+        public TransactionInfo(uint height, int index, string id, string hash, string merkleComponentHash, byte feeMultiplier, BigInteger timestamp)
         {
             Height = height;
             Index = index;
@@ -56,7 +54,6 @@ namespace Symnity.Model.Transactions
             MerkleComponentHash = merkleComponentHash;
             Timestamp = timestamp;
             FeeMultiplier = feeMultiplier;
-            Transaction = transaction;
         }
     }
 }

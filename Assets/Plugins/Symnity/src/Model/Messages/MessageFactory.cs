@@ -29,13 +29,12 @@ namespace Symnity.Model.Messages
                 return PersistentHarvestingDelegationMessage.createFromPayload(upperCasePayload);
             }*/
             var messageType = ConvertUtils.GetBytes(upperCasePayload)[0];
-            switch (messageType) {
-                case (int)MessageType.PlainMessage:
-                    return PlainMessage.CreateFromPayload(upperCasePayload[2..]);
-                case (int)MessageType.EncryptedMessage:
-                    return EncryptedMessage.CreateFromPayload(upperCasePayload[2..]);
-            }
-            return new RawMessage(upperCasePayload);
+            return messageType switch
+            {
+                (int) MessageType.PlainMessage => PlainMessage.CreateFromPayload(upperCasePayload[2..]),
+                (int) MessageType.EncryptedMessage => EncryptedMessage.CreateFromPayload(upperCasePayload[2..]),
+                _ => new RawMessage(upperCasePayload)
+            };
         }
 
         /**

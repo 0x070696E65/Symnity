@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using Symbol.Builders;
 using Org.BouncyCastle.Crypto.Digests;
 using Symnity.Core.Crypto;
@@ -89,7 +90,7 @@ namespace Symnity.Model.Transactions
         /**
          * Transactions meta data object contains additional information about the transaction.
          */
-        public readonly TransactionInfo TransactionInfo;
+        [CanBeNull] public readonly TransactionInfo TransactionInfo;
 
         /**
          * @constructor

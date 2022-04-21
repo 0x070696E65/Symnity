@@ -8,7 +8,7 @@ using Symnity.Model.Accounts;
 using Symnity.Model.Mosaics;
 using UnityEngine;
 
-namespace Plugins.Symnity.src.Repositories
+namespace Symnity.Infrastructure
 {
     public class AccountRepository
     {

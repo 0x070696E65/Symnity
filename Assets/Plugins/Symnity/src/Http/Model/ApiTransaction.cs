@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using Cysharp.Threading.Tasks;
+using Symnity.Infrastructure.SearchCriteria;
+using Symnity.Model.Accounts;
 using UnityEngine;
 
 namespace Symnity.Http.Model
@@ -14,79 +17,41 @@ namespace Symnity.Http.Model
             var root = JsonUtility.FromJson<Datum>(transactionRootData);
             return root;
         }
-
-        public class TransactionQueryParameters
+        
+        public static async UniTask<Datum> GetUnconfirmedTransaction(string node, string id)
         {
-            public string address;
-            public string recipientAddress;
-            public string signerPublicKey;
-            public string height;
-            public string fromHeight;
-            public string toHeight;
-            public string fromTransferAmount;
-            public string toTransferAmount;
-            public List<int> type;
-            public bool embedded;
-            public string transferMosaicId;
-            public int pageSize;
-            public int pageNumber;
-            public string offset;
-            public string order;
-
-            public TransactionQueryParameters(
-                string address = null,
-                string recipientAddress = null,
-                string signerPublicKey = null,
-                string height = null,
-                string fromHeight = null,
-                string toHeight = null,
-                string fromTransferAmount = null,
-                string toTransferAmount = null,
-                List<int> type = null,
-                bool embedded = false,
-                string transferMosaicId = null,
-                int pageSize = 10,
-                int pageNumber = 1,
-                string offset = null,
-                string order = null
-            )
-            {
-                this.address = address;
-                this.recipientAddress = recipientAddress;
-                this.signerPublicKey = signerPublicKey;
-                this.height = height;
-                this.fromHeight = fromHeight;
-                this.toHeight = toHeight;
-                this.fromTransferAmount = fromTransferAmount;
-                this.toTransferAmount = toTransferAmount;
-                this.type = type;
-                this.embedded = embedded;
-                this.transferMosaicId = transferMosaicId;
-                this.pageSize = pageSize;
-                this.pageNumber = pageNumber;
-                this.offset = offset;
-                this.order = order;
-            }
+            var url = "/transactions/unconfirmed/" + id;
+            var datumString = await HttpUtilities.GetDataFromApiString(node, url);
+            return JsonUtility.FromJson<Datum>(datumString);
+        }
+        
+        public static async UniTask<Datum> GetPartialTransaction(string node, string id)
+        {
+            var url = "/transactions/partial/" + id;
+            var datumString = await HttpUtilities.GetDataFromApiString(node, url);
+            return JsonUtility.FromJson<Datum>(datumString);
         }
 
-        public static async UniTask<Root> SearchConfirmedTransactions(string node, TransactionQueryParameters query)
+
+        public static async UniTask<Root> SearchConfirmedTransactions(string node, TransactionSearchCriteria query)
         {
             var param = "?";
-            if (query.address != null) param += "&address=" + query.address;
-            if (query.recipientAddress != null) param += "&recipientAddress=" + query.recipientAddress;
-            if (query.signerPublicKey != null) param += "&signerPublicKey=" + query.signerPublicKey;
-            if (query.height != null) param += "&height=" + query.height;
-            if (query.fromHeight != null) param += "&fromHeight=" + query.fromHeight;
-            if (query.toHeight != null) param += "&toHeight=" + query.toHeight;
-            if (query.fromTransferAmount != null) param += "&fromTransferAmount=" + query.fromTransferAmount;
-            if (query.toTransferAmount != null) param += "&toTransferAmount=" + query.toTransferAmount;
-            if (query.type != null) param += "&type=" + query.type;
-            if (query.embedded) param += "&embedded=" + query.embedded;
-            if (query.transferMosaicId != null) param += "&transferMosaicId=" + query.transferMosaicId;
-            if (query.pageSize != 10) param += "&pageSize=" + query.pageSize;
-            if (query.pageNumber != 1) param += "&pageNumber=" + query.pageNumber;
-            if (query.offset != null) param += "&offset=" + query.offset;
-            if (query.order != null) param += "&order=" + query.order;
+            if (query.Address != null) param += "&address=" + query.Address.Plain();
+            if (query.RecipientAddress != null) param += "&recipientAddress=" + query.RecipientAddress.Plain();
+            if (query.SignerPublicKey != null) param += "&signerPublicKey=" + query.SignerPublicKey;
+            if (query.Height != null) param += "&height=" + query.Height;
+            if (query.FromHeight != null) param += "&fromHeight=" + query.FromHeight;
+            if (query.ToHeight != null) param += "&toHeight=" + query.ToHeight;
+            if (query.FromTransferAmount != null) param += "&fromTransferAmount=" + query.FromTransferAmount;
+            if (query.ToTransferAmount != null) param += "&toTransferAmount=" + query.ToTransferAmount;
+            if (query.Type != null) param += "&type=" + query.Type;
+            if (query.Embedded) param += "&embedded=" + query.Embedded;
+            if (query.TransferMosaicId != null) param += "&transferMosaicId=" + query.TransferMosaicId.GetIdAsHex();
+            if (query.PageSize != 10) param += "&pageSize=" + query.PageSize;
+            if (query.PageNumber != 1) param += "&pageNumber=" + query.PageNumber;
+            if (query.Offset != null) param += "&offset=" + query.Offset;
+            var order = query.Order == Order.Asc ? "asc" : "desc";
+            param += "&order=" + order;
 
             var url = "/transactions/confirmed" + param;
             Debug.Log(url);
@@ -95,37 +60,6 @@ namespace Symnity.Http.Model
             return root;
         }
         
-        public static async UniTask<Root> SearchUnConfirmedTransactions(string node, TransactionQueryParameters query)
-        {
-            var param = "?";
-            if (query.address != null) param += "&address=" + query.address;
-            if (query.recipientAddress != null) param += "&recipientAddress=" + query.recipientAddress;
-            if (query.signerPublicKey != null) param += "&signerPublicKey=" + query.signerPublicKey;
-            if (query.height != null) param += "&height=" + query.height;
-            if (query.fromHeight != null) param += "&fromHeight=" + query.fromHeight;
-            if (query.fromTransferAmount != null) param += "&fromTransferAmount=" + query.fromTransferAmount;
-            if (query.toTransferAmount != null) param += "&toTransferAmount=" + query.toTransferAmount;
-            if (query.type != null) param += "&type=" + query.type;
-            if (query.embedded != true) param += "&embedded=" + query.embedded;
-            if (query.transferMosaicId != null) param += "&transferMosaicId=" + query.transferMosaicId;
-            if (query.pageSize != 10) param += "&pageSize=" + query.pageSize;
-            if (query.pageNumber != 1) param += "&pageNumber=" + query.pageNumber;
-            if (query.offset != null) param += "&offset=" + query.offset;
-            if (query.order != null) param += "&order=" + query.order;
-
-            var url = "/transactions/unconfirmed" + param;
-            var transactionRootData = await HttpUtilities.GetDataFromApiString(node, url);
-            var root = JsonUtility.FromJson<Root>(transactionRootData);
-            return root;
-        }
-
-        public static async UniTask<Datum> GetUnConfirmedTransaction(string node, string id)
-        {
-            var url = "/transactions/unconfirmed/" + id;
-            var datumString = await HttpUtilities.GetDataFromApiString(node, url);
-            return JsonUtility.FromJson<Datum>(datumString);
-        }
-
         [Serializable]
         public class Meta
         {
@@ -135,6 +69,16 @@ namespace Symnity.Http.Model
             public int index;
             public string timestamp;
             public int feeMultiplier;
+            public string aggregateHash;
+            public string aggregateId;
+        }
+        
+        [Serializable]
+        public class InnerTransactionDatum
+        {
+            public Meta meta;
+            public string id;
+            public InnerTransaction transaction;
         }
 
         [Serializable]
@@ -150,21 +94,35 @@ namespace Symnity.Http.Model
             public string deadline;
             public string recipientAddress;
             public string message;
-            public List<ApiMosaic> mosaics;
-            public List<AggTransaction> transactions;
-            public List<string> cosignatures;
-        }
-        
-        [Serializable]
-        public class AggTransaction
-        {
-            public Meta meta;
-            public AggInnerTransaction transaction;
+            public List<Cosignatures> cosignatures;
+            public List<Mosaic> mosaics;
+            public int nonce;
             public string id;
+            public int flags;
+            public byte divisibility;
+            public string duration;
+            public string mosaicId;
+            public int action;
+            public string delta;
+            public string amount;
+            public int hashAlgorithm;
+            public string secret;
+            public string proof;
+            public string targetAddress;
+            public string scopedMetadataKey;
+            public int valueSizeDelta;
+            public int valueSize;
+            public string value;
+            public string targetMosaicId;
+            public int minRemovalDelta;
+            public int minApprovalDelta;
+            public List<string> addressAdditions;
+            public List<string> addressDeletions;
+            public List<InnerTransactionDatum> transactions;
         }
         
         [Serializable]
-        public class AggInnerTransaction
+        public class InnerTransaction
         {
             public int size;
             public string signature;
@@ -176,35 +134,55 @@ namespace Symnity.Http.Model
             public string deadline;
             public string recipientAddress;
             public string message;
-            public List<ApiMosaic> mosaics;
+            public List<Cosignatures> cosignatures;
+            public List<Mosaic> mosaics;
+            public int nonce;
+            public string id;
+            public int flags;
+            public byte divisibility;
+            public string duration;
+            public string mosaicId;
+            public int action;
+            public string delta;
+            public string amount;
+            public int hashAlgorithm;
+            public string secret;
+            public string proof;
             public string targetAddress;
             public string scopedMetadataKey;
             public int valueSizeDelta;
             public int valueSize;
             public string value;
+            public string targetMosaicId;
+            public int minRemovalDelta;
+            public int minApprovalDelta;
+            public List<string> addressAdditions;
+            public List<string> addressDeletions;
         }
 
         [Serializable]
-        public class ApiMosaic
+        public class Cosignatures
+        {
+            public string version;
+            public string signerPublicKey;
+            public string signature;
+        }
+        
+        [Serializable]
+        public class Mosaic
         {
             public string id;
             public int amount;
-
-            public ApiMosaic(string id, int amount)
-            {
-                this.id = id;
-                this.amount = amount;
-            }
         }
 
         [Serializable]
         public class Datum
         {
             public Meta meta;
-            public Transaction transaction;
             public string id;
+            public Transaction transaction;
         }
-
+        
         [Serializable]
         public class Pagination
         {
