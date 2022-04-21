@@ -23,7 +23,7 @@ namespace Symnity.Http.Model
             public string accountAddress;
             public int minApproval;
             public int minRemoval;
-            public List<object> cosignatoryAddresses;
+            public List<string> cosignatoryAddresses;
             public List<string> multisigAddresses;
         }
 
