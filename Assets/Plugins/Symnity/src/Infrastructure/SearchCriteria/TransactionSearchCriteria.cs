@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using JetBrains.Annotations;
 using Symnity.Model.Accounts;
 using Symnity.Model.Mosaics;
 using Symnity.Model.Transactions;
@@ -27,17 +28,17 @@ namespace Symnity.Infrastructure.SearchCriteria
         * This filter cannot be combined with ''recipientAddress'' and ''signerPublicKey'' query
         * params.  (optional)
         */
-        public  Address Address;
+        [CanBeNull] public  Address Address;
 
         /**
         * Address of an account receiving the transaction. (optional)
         */
-        public Address RecipientAddress;
+        [CanBeNull] public Address RecipientAddress;
 
         /**
         * Public key of the account signing the entity. (optional)
         */
-        public string SignerPublicKey;
+        [CanBeNull] public string SignerPublicKey;
 
         /**
         * Filter by block height. (optional, default to null)
@@ -48,7 +49,7 @@ namespace Symnity.Infrastructure.SearchCriteria
         * Filter by transaction type. To filter by multiple transaction type.  (optional, default to
         * new empty array)
         */
-        public  List<TransactionType> Type;
+        [CanBeNull] public  List<TransactionType> Type;
 
         /**
         * When true, the endpoint also returns all the embedded aggregate transactions. When
@@ -70,7 +71,7 @@ namespace Symnity.Infrastructure.SearchCriteria
         /**
          * Filters transactions involving a specific `mosaicId` hex.
          */
-        public MosaicId TransferMosaicId;
+        [CanBeNull] public MosaicId TransferMosaicId;
 
         /**
          * Requires providing the `transferMosaicId` filter.

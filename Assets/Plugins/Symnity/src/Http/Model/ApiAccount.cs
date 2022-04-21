@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Symnity.Infrastructure.SearchCriteria;
 using UnityEngine;
 
 namespace Symnity.Http.Model
@@ -8,52 +9,28 @@ namespace Symnity.Http.Model
     [Serializable]
     public class ApiAccount : MonoBehaviour
     {
-        public static async UniTask<AccountDatum> GetAccountInformation(string node, string accountId)
+        public static async UniTask<AccountDatum> GetAccountInformation(string node, string accountId, bool log = false)
         {
             var url = "/accounts/" + accountId;
+            if(log) Debug.Log($@"<a href=""{node}{url}"">{node}{url}</a>");
             var accountDatumStr = await HttpUtilities.GetDataFromApiString(node, url);
             var accountDatum = JsonUtility.FromJson<AccountDatum>(accountDatumStr);
             return accountDatum;
         }
         
-        public class AccountQueryParameters
-        {
-            public int pageSize;
-            public int pageNumber;
-            public string offset;
-            public string order;
-            public string orderBy;
-            public string mosaicId;
-
-            public AccountQueryParameters(
-                int pageSize = 10,
-                int pageNumber = 1,
-                string offset = null,
-                string order = null,
-                string orderBy = null,
-                string mosaicId = null
-            )
-            {
-                this.pageSize = pageSize;
-                this.pageNumber = pageNumber;
-                this.offset = offset;
-                this.order = order;
-                this.orderBy = orderBy;
-                this.mosaicId = mosaicId;
-            }
-        }
-
-        public static async UniTask<AccountRoot> SearchAccounts(string node, AccountQueryParameters query)
+        public static async UniTask<AccountRoot> SearchAccounts(string node, AccountSearchCriteria query)
         {
             var param = "?";
-            if (query.pageSize != 10) param += "&pageSize=" + query.pageSize;
-            if (query.pageNumber != 1) param += "&pageNumber=" + query.pageNumber;
-            if (query.offset != null) param += "&offset=" + query.offset;
-            if (query.order != null) param += "&order=" + query.order;
-            if (query.orderBy != null) param += "&orderBy=" + query.orderBy;
-            if (query.mosaicId != null) param += "&mosaicId=" + query.mosaicId;
-
+            if (query.PageSize != 20) param += "&pageSize=" + query.PageSize;
+            if (query.PageNumber != 1) param += "&pageNumber=" + query.PageNumber;
+            if (query.Offset != null) param += "&offset=" + query.Offset;
+            if (query.MosaicId != null) param += "&mosaicId=" + query.MosaicId.GetIdAsHex();
+            var orderBy = query.OrderBy == AccountOrderBy.Id ? "id" : "balance";
+            param += "&orderBy=" + orderBy;
+            var order = query.Order == Order.Asc ? "asc" : "desc";
+            param += "&order=" + order;
             var url = "/accounts" + param;
+            Debug.Log($@"<a href=""{node}{url}"">{node}{url}</a>");
             var accountRootData = await HttpUtilities.GetDataFromApiString(node, url);
             var root = JsonUtility.FromJson<AccountRoot>(accountRootData);
             return root;

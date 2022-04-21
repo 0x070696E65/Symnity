@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+
 namespace Symnity.Infrastructure.SearchCriteria
 {
     public class SearchCriteria
@@ -24,7 +26,7 @@ namespace Symnity.Infrastructure.SearchCriteria
          * returned precede the identifier. Otherwise, newer elements with respect to the id are
          * returned. (optional)
          */
-        public string Offset;
+        [CanBeNull] public string Offset;
 
         public SearchCriteria(Order order = Order.Asc, int pageSize = 20, int pageNumber = 1, string offset = null)
         {

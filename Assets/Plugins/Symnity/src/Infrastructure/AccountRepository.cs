@@ -4,9 +4,9 @@ using System.Linq;
 using System.Numerics;
 using Cysharp.Threading.Tasks;
 using Symnity.Http.Model;
+using Symnity.Infrastructure.SearchCriteria;
 using Symnity.Model.Accounts;
 using Symnity.Model.Mosaics;
-using UnityEngine;
 
 namespace Symnity.Infrastructure
 {
@@ -84,6 +84,17 @@ namespace Symnity.Infrastructure
                 activityBuckets
             );
             return accountInfo;
+        }
+        
+        public async UniTask<Page<AccountInfo>> Search(AccountSearchCriteria searchCriteria)
+        {
+            var result = await ApiAccount.SearchAccounts(Node, searchCriteria);
+            var list = (await result.data.Select(async datum => await GetAccountInformation(Address.CreateFromEncoded(datum.account.address)))).ToList();
+            return new Page<AccountInfo>(
+                list,
+                result.pagination.pageNumber,
+                result.pagination.pageSize
+            );
         }
     }
 }

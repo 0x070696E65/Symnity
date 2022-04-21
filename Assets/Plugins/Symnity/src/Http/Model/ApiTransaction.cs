@@ -10,24 +10,27 @@ namespace Symnity.Http.Model
 {
     public class ApiTransaction : MonoBehaviour
     {
-        public static async UniTask<Datum> GetConfirmedTransaction(string node, string hash)
+        public static async UniTask<Datum> GetConfirmedTransaction(string node, string hash, bool log= false)
         {
             var url = "/transactions/confirmed/" + hash;
+            if(log) Debug.Log($@"<a href=""{node}{url}"">{node}{url}</a>");
             var transactionRootData = await HttpUtilities.GetDataFromApiString(node, url);
             var root = JsonUtility.FromJson<Datum>(transactionRootData);
             return root;
         }
         
-        public static async UniTask<Datum> GetUnconfirmedTransaction(string node, string id)
+        public static async UniTask<Datum> GetUnconfirmedTransaction(string node, string id, bool log= false)
         {
             var url = "/transactions/unconfirmed/" + id;
+            if(log) Debug.Log($@"<a href=""{node}{url}"">{node}{url}</a>");
             var datumString = await HttpUtilities.GetDataFromApiString(node, url);
             return JsonUtility.FromJson<Datum>(datumString);
         }
         
-        public static async UniTask<Datum> GetPartialTransaction(string node, string id)
+        public static async UniTask<Datum> GetPartialTransaction(string node, string id, bool log= false)
         {
             var url = "/transactions/partial/" + id;
+            if(log) Debug.Log($@"<a href=""{node}{url}"">{node}{url}</a>");
             var datumString = await HttpUtilities.GetDataFromApiString(node, url);
             return JsonUtility.FromJson<Datum>(datumString);
         }
@@ -47,14 +50,14 @@ namespace Symnity.Http.Model
             if (query.Type != null) param += "&type=" + query.Type;
             if (query.Embedded) param += "&embedded=" + query.Embedded;
             if (query.TransferMosaicId != null) param += "&transferMosaicId=" + query.TransferMosaicId.GetIdAsHex();
-            if (query.PageSize != 10) param += "&pageSize=" + query.PageSize;
+            if (query.PageSize != 20) param += "&pageSize=" + query.PageSize;
             if (query.PageNumber != 1) param += "&pageNumber=" + query.PageNumber;
             if (query.Offset != null) param += "&offset=" + query.Offset;
             var order = query.Order == Order.Asc ? "asc" : "desc";
             param += "&order=" + order;
 
             var url = "/transactions/confirmed" + param;
-            Debug.Log(url);
+            Debug.Log($@"<a href=""{node}{url}"">{node}{url}</a>");
             var transactionRootData = await HttpUtilities.GetDataFromApiString(node, url);
             var root = JsonUtility.FromJson<Root>(transactionRootData);
             return root;
