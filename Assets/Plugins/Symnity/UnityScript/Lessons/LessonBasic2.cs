@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Symnity.Http;
 using Symnity.Infrastructure;
 using Symnity.Infrastructure.SearchCriteria;
 using Symnity.Model.Accounts;
@@ -16,23 +17,15 @@ public class LessonBasic2 : MonoBehaviour
     [SerializeField] private TMP_InputField privateKeyInputField;
     [SerializeField] private TMP_InputField addressInputField;
     [SerializeField] private TMP_InputField mosaicIdInputField;
+    [SerializeField] private TMP_InputField messageInputField;
     [SerializeField] private TMP_InputField mosaicAmountInputField;
-
+    [SerializeField] private string node;
     private TransactionRepository transactionRepository;
-
+    
     private async void Start()
     {
-        var bbb = new TransactionSearchCriteria(
-            group: TransactionGroup.Confirmed,
-            order:Order.Asc,
-            pageSize:1,
-            pageNumber:2,
-            address: Address.CreateFromPublicKey("A890D229FEBDADEDD5B7D1DBDF2B4BECD21CCDCD15C420FC986CE8BBC2C972E4", NetworkType.TEST_NET)
-            );
-        transactionRepository = new TransactionRepository("https://hideyoshi.mydns.jp:3001");
+        transactionRepository = new TransactionRepository(node);
         lesson2Button.onClick.AddListener(SendMosaic);
-        var page = await transactionRepository.Search(bbb);
-        Debug.Log(page.Data[0].TransactionInfo?.Hash);
     }
     
     private async void SendMosaic()
@@ -41,17 +34,20 @@ public class LessonBasic2 : MonoBehaviour
         var address = Address.CreateFromRawAddress(addressInputField.text);
         var mosaicId = mosaicIdInputField.text;
         var mosaicList = new List<Mosaic>() {new Mosaic(new MosaicId(mosaicId), long.Parse(mosaicAmountInputField.text))};
+        
+        var epocAdjustment = await HttpUtilities.GetEpochAdjustment(node);
+        var generationHash = await HttpUtilities.GetGenerationHash(node);
 
         var transferTransaction = TransferTransaction.Create(
-            Deadline.Create(1637848847),
+            Deadline.Create(epocAdjustment),
             address,
             mosaicList,
-            MessageFactory.EmptyMessage(),
+            PlainMessage.Create(messageInputField.text),
             NetworkType.TEST_NET
         ).SetMaxFee(100);
-
-        var signedTransaction = signerAccount.Sign(transferTransaction,
-            "7FCCD304802016BEBBCD342A332F91FF1F3BB5E902988B352697BE245F48E836");
+        
+        var signedTransaction = signerAccount.Sign(transferTransaction, generationHash);
+        Debug.Log($@"<a href=""https://testnet.symbol.fyi/transactions/{signedTransaction.Hash}"">https://testnet.symbol.fyi/transactions/{signedTransaction.Hash}</a>");
         var result = await transactionRepository.Announce(signedTransaction);
         Debug.Log(result);
     }
