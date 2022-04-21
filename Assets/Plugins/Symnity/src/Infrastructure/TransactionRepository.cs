@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
 using Symnity.Core.Format;
 using Symnity.Http;
@@ -16,7 +15,6 @@ using Symnity.Model.Messages;
 using Symnity.Model.Mosaics;
 using Symnity.Model.Network;
 using Symnity.Model.Transactions;
-using UnityEngine;
 
 namespace Symnity.Infrastructure
 {
