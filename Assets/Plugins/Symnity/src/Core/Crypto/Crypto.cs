@@ -191,5 +191,106 @@ namespace Symnity.Core.Crypto
                 return "";
             }
         }
+        
+        private static AesManaged CreateAesManaged(string key, string iv)
+        {
+            var aes = new AesManaged();
+            aes.KeySize = 128;
+            aes.BlockSize = 128;
+            aes.Mode = CipherMode.CBC;
+            aes.IV = Encoding.UTF8.GetBytes(iv);
+            aes.Key = Encoding.UTF8.GetBytes(key);
+            aes.Padding = PaddingMode.PKCS7;
+            return aes;
+        }
+
+        public static string Encrypt(string text, string key, string iv)
+        {
+            var aes = CreateAesManaged(key, iv);
+            var byteText = Encoding.UTF8.GetBytes(text);
+            var encryptText = aes.CreateEncryptor().TransformFinalBlock(byteText, 0, byteText.Length);
+            return Convert.ToBase64String(encryptText);
+        }
+
+        public static string Decrypt(string text, string key, string iv)
+        {
+            var aes = CreateAesManaged(key, iv);
+            var src = System.Convert.FromBase64String(text);
+            var dest = aes.CreateDecryptor().TransformFinalBlock(src, 0, src.Length);
+            return Encoding.UTF8.GetString(dest);
+        }
+
+        public static string EncryptString(string sourceString, string password)
+        {
+            //RijndaelManagedオブジェクトを作成
+            var rijndael = new RijndaelManaged();
+
+            //パスワードから共有キーと初期化ベクタを作成
+            byte[] key, iv;
+            GenerateKeyFromPassword(
+                password, rijndael.KeySize, out key, rijndael.BlockSize, out iv);
+            rijndael.Key = key;
+            rijndael.IV = iv;
+
+            //文字列をバイト型配列に変換する
+            var strBytes = Encoding.UTF8.GetBytes(sourceString);
+
+            //対称暗号化オブジェクトの作成
+            var encryptor = rijndael.CreateEncryptor();
+            //バイト型配列を暗号化する
+            var encBytes = encryptor.TransformFinalBlock(strBytes, 0, strBytes.Length);
+            //閉じる
+            encryptor.Dispose();
+
+            //バイト型配列を文字列に変換して返す
+            return Convert.ToBase64String(encBytes);
+        }
+
+        public static string DecryptString(string sourceString, string password)
+        {
+            //RijndaelManagedオブジェクトを作成
+            var rijndael = new RijndaelManaged();
+
+            //パスワードから共有キーと初期化ベクタを作成
+            byte[] key, iv;
+            GenerateKeyFromPassword(
+                password, rijndael.KeySize, out key, rijndael.BlockSize, out iv);
+            rijndael.Key = key;
+            rijndael.IV = iv;
+
+            //文字列をバイト型配列に戻す
+            var strBytes = Convert.FromBase64String(sourceString);
+
+            //対称暗号化オブジェクトの作成
+            var decryptor = rijndael.CreateDecryptor();
+            //バイト型配列を復号化する
+            //復号化に失敗すると例外CryptographicExceptionが発生
+            var decBytes = decryptor.TransformFinalBlock(strBytes, 0, strBytes.Length);
+            //閉じる
+            decryptor.Dispose();
+
+            //バイト型配列を文字列に戻して返す
+            return Encoding.UTF8.GetString(decBytes);
+        }
+
+        private static void GenerateKeyFromPassword(string password,
+            int keySize, out byte[] key, int blockSize, out byte[] iv)
+        {
+            //パスワードから共有キーと初期化ベクタを作成する
+            //saltを決める
+            byte[] salt = System.Text.Encoding.UTF8.GetBytes("saltは必ず8バイト以上");
+            //Rfc2898DeriveBytesオブジェクトを作成する
+            System.Security.Cryptography.Rfc2898DeriveBytes deriveBytes =
+                new System.Security.Cryptography.Rfc2898DeriveBytes(password, salt);
+            //.NET Framework 1.1以下の時は、PasswordDeriveBytesを使用する
+            //System.Security.Cryptography.PasswordDeriveBytes deriveBytes =
+            //    new System.Security.Cryptography.PasswordDeriveBytes(password, salt);
+            //反復処理回数を指定する デフォルトで1000回
+            deriveBytes.IterationCount = 1000;
+
+            //共有キーと初期化ベクタを生成する
+            key = deriveBytes.GetBytes(keySize / 8);
+            iv = deriveBytes.GetBytes(blockSize / 8);
+        }
     }
 }
