@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Symnity.Http;
 using Symnity.Infrastructure;
-using Symnity.Infrastructure.SearchCriteria;
 using Symnity.Model.Accounts;
 using Symnity.Model.Messages;
 using Symnity.Model.Mosaics;
@@ -22,7 +21,7 @@ public class LessonBasic2 : MonoBehaviour
     [SerializeField] private string node;
     private TransactionRepository transactionRepository;
     
-    private async void Start()
+    private void Start()
     {
         transactionRepository = new TransactionRepository(node);
         lesson2Button.onClick.AddListener(SendMosaic);
@@ -45,6 +44,8 @@ public class LessonBasic2 : MonoBehaviour
             PlainMessage.Create(messageInputField.text),
             NetworkType.TEST_NET
         ).SetMaxFee(100);
+        
+        
         
         var signedTransaction = signerAccount.Sign(transferTransaction, generationHash);
         Debug.Log($@"<a href=""https://testnet.symbol.fyi/transactions/{signedTransaction.Hash}"">https://testnet.symbol.fyi/transactions/{signedTransaction.Hash}</a>");
