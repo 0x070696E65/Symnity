@@ -39,11 +39,11 @@ namespace Symnity.UnityScript
             };
         }
 
-        public string node;
-        public string callbackGameObjectName;
-        public string callbackFunctionName;
-        public string callBackPayload;
-        public string transactionType;
+        [HideInInspector] public string node;
+        [HideInInspector] public string callbackGameObjectName;
+        [HideInInspector] public string callbackFunctionName;
+        [HideInInspector] public string callBackPayload;
+        [HideInInspector] public string transactionType;
 
         private SssExtension(string callbackGameObjectName, string callbackFunctionName, string callBackPayload,
             string transactionType)

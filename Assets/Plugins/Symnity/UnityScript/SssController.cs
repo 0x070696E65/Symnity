@@ -12,10 +12,12 @@ namespace Symnity.UnityScript
     public class SssController : MonoBehaviour
     {
         [SerializeField] private Button excuseButton;
+        [SerializeField] private Button excuseButton2;
         
         private void Start()
         {
             excuseButton.onClick.AddListener(Excuse);
+            excuseButton2.onClick.AddListener(Excuse2);
         }
 
         private void Excuse()
@@ -57,6 +59,28 @@ namespace Symnity.UnityScript
                 new List<AggregateTransactionCosignature>() { }
             ).SetMaxFeeForAggregate(100, 0);
             sss.AnnounceTransaction(aggTx, "https://hideyoshi.mydns.jp:3001", SssMethodType.Announce);
+        }
+        
+        private void Excuse2()
+        {
+            var sss = GetComponent<SssExtension>();
+            var activeAddress = sss.GetActiveAddress();
+            var activePublicKey = sss.GetActivePublicKey();
+            var activeNetworkType = sss.GetActiveNetworkType();
+            Debug.Log(activeAddress);
+            Debug.Log(activePublicKey);
+            Debug.Log(activeNetworkType);
+            
+            var publicAccountBob = PublicAccount.CreateFromPublicKey("B055C6F655CD3101A04567F9499F24BE7AB970C879887BD3C6644AB7CAA22D22", NetworkType.TEST_NET);
+            var deadLine = Deadline.Create(1637848847);
+            var tx1 = TransferTransaction.Create(
+                deadLine,
+                publicAccountBob.Address,
+                new List<Mosaic>() { },
+                PlainMessage.Create("TEST"),
+                NetworkType.TEST_NET
+            ).SetMaxFee(100);
+            sss.AnnounceTransaction(tx1, "https://hideyoshi.mydns.jp:3001", SssMethodType.Announce);
         }
     }
 }

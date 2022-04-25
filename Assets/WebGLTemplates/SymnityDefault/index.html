@@ -128,12 +128,16 @@
           };
 
           async function getSignedTransaction(parameter) {
+            if(!window.SSS) {
+              console.log("SSS is not instaled");
+              return;
+            }
             console.log("type: "+parameter.transactionType);
             var tx = getTransaction(parameter.transactionType, parameter.callBackPayload);
             window.SSS.setTransaction(tx);
             var signedTx = await window.SSS.requestSign();
-            console.log(signedTx);
             unityInstance.SendMessage(parameter.callbackGameObjectName, parameter.callbackFunctionName, signedTx.payload);
+            signedTx.networkType == sym.NetworkType.MAIN_NET ? console.log("https://symbol.fyi/transactions/" + signedTx.hash) : console.log("https://testnet.symbol.fyi/transactions/" + signedTx.hash);
           };
 
           function recieveMessage(event) {

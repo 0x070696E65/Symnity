@@ -1,11 +1,4 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using System.Numerics;
-using Symnity.Model.Accounts;
-using Symnity.Model.Mosaics;
-using Symnity.Model.Transactions;
-
 namespace Symnity.Infrastructure.SearchCriteria
 {
     public class NodeSearchCriteria

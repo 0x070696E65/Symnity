@@ -45,8 +45,6 @@ public class LessonBasic2 : MonoBehaviour
             NetworkType.TEST_NET
         ).SetMaxFee(100);
         
-        
-        
         var signedTransaction = signerAccount.Sign(transferTransaction, generationHash);
         Debug.Log($@"<a href=""https://testnet.symbol.fyi/transactions/{signedTransaction.Hash}"">https://testnet.symbol.fyi/transactions/{signedTransaction.Hash}</a>");
         var result = await transactionRepository.Announce(signedTransaction);
