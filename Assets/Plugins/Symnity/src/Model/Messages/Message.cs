@@ -26,7 +26,7 @@ namespace Symnity.Model.Messages
          */
         public static string DecodeHex(string hex)
         {
-            return ConvertUtils.HexToChar(hex, true);
+            return ConvertUtils.HexToChar2(hex);
         }
 
         /**

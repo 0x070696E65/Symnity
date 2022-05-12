@@ -31,8 +31,8 @@ namespace Symnity.Model.Messages
             var messageType = ConvertUtils.GetBytes(upperCasePayload)[0];
             return messageType switch
             {
-                (int) MessageType.PlainMessage => PlainMessage.CreateFromPayload(upperCasePayload[2..]),
-                (int) MessageType.EncryptedMessage => EncryptedMessage.CreateFromPayload(upperCasePayload[2..]),
+                (int) MessageType.PlainMessage => PlainMessage.CreateFromPayload(upperCasePayload.Substring(2)),
+                (int) MessageType.EncryptedMessage => EncryptedMessage.CreateFromPayload(upperCasePayload.Substring(2)),
                 _ => new RawMessage(upperCasePayload)
             };
         }
