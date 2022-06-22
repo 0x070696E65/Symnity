@@ -11,17 +11,16 @@ namespace Symnity.Http
     {
         public static async UniTask<string> Announce(string nodeUrl, string payload)
         {
+            var url = nodeUrl + "/transactions";
+            var myData = Encoding.UTF8.GetBytes("{ \"payload\" : \"" + payload + "\"}");
+            var webRequest = UnityWebRequest.Put(url, myData);
             try
             { 
-                var url = nodeUrl + "/transactions";
-                var myData = Encoding.UTF8.GetBytes("{ \"payload\" : \"" + payload + "\"}");
-                var webRequest = UnityWebRequest.Put(url, myData);
                 webRequest.SetRequestHeader("Content-Type", "application/json");
                 webRequest.downloadHandler = new DownloadHandlerBuffer();
                 await webRequest.SendWebRequest();
                 if (webRequest.result == UnityWebRequest.Result.ProtocolError)
                 {
-                    //エラー確認
                     throw new Exception(webRequest.error);
                 }
                 var result = webRequest.downloadHandler.text;
@@ -32,16 +31,20 @@ namespace Symnity.Http
             {
                 throw new Exception("announce error: " + e.Message);
             }
+            finally
+            {
+                webRequest.Dispose();
+            }
         }
         
         public static async UniTask<string> GetDataFromApiString(string node, string param)
         {
+            var url = node + param;
+            var webRequest = UnityWebRequest.Get(url);
             try
             {
-                var url = node + param;
-                var webRequest = UnityWebRequest.Get(url);
                 await webRequest.SendWebRequest();
-                
+
                 if (webRequest.result == UnityWebRequest.Result.ProtocolError)
                 {
                     //エラー確認
@@ -50,12 +53,16 @@ namespace Symnity.Http
                 else
                 {
                     //結果確認
-                    return  webRequest.downloadHandler.text;
+                    return webRequest.downloadHandler.text;
                 }
             }
             catch (Exception e)
             {
                 throw new Exception("Error From GetDataFromApi" + e.Message);
+            }
+            finally
+            {
+                webRequest.Dispose();
             }
         }
 

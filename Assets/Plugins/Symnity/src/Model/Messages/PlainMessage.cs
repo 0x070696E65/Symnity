@@ -9,7 +9,7 @@ namespace Symnity.Model.Messages
          * Create plain message object.
          * @returns PlainMessage
          */
-        public static PlainMessage Create(string  message) {
+        public static PlainMessage Create(string message) {
             return new PlainMessage(message);
         }
         

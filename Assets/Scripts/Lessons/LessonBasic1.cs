@@ -16,7 +16,6 @@ public class LessonBasic1 : MonoBehaviour
 
     private void Start()
     {
-        
         accountRepository = new AccountRepository("NODE_URL");
         lesson1Button.onClick.AddListener(GetMosaic);
     }
@@ -26,7 +25,9 @@ public class LessonBasic1 : MonoBehaviour
         var address = Address.CreateFromRawAddress(addressInputField.text);
         var mosaicId = mosaicIdInputField.text;
         var accountInfo = await accountRepository.GetAccountInfo(address);
+        
         var mosaic = accountInfo.mosaics.Select(mosaic => mosaic.Id.GetIdAsHex() == mosaicId ? mosaic : null);
+
         mosaicAmount.text = mosaic.ToList()[0].Amount.ToString();
     }
 }
