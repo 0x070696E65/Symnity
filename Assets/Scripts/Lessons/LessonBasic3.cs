@@ -28,14 +28,14 @@ private void Start()
             return;
         }
 
-        var encryptedPrivateKey = Crypto.EncryptString(privateKeyInputField.text, passwordInputField.text);
+        var encryptedPrivateKey = Crypto.EncryptString(privateKeyInputField.text, passwordInputField.text, SystemInfo.deviceUniqueIdentifier);
         PlayerPrefs.SetString("ENCRYPTED_PRIVATE_KEY", encryptedPrivateKey);
     }
 
 private void ShowPrivateKey()
 {
     var encryptedPrivateKey = PlayerPrefs.GetString("ENCRYPTED_PRIVATE_KEY", "");
-    showPrivateKey.text = Crypto.DecryptString(encryptedPrivateKey, showPasswordInputField.text);
+    showPrivateKey.text = Crypto.DecryptString(encryptedPrivateKey, showPasswordInputField.text, SystemInfo.deviceUniqueIdentifier);
 }
 
     private bool ValidatePassword()

@@ -220,7 +220,7 @@ namespace Symnity.Core.Crypto
             return Encoding.UTF8.GetString(dest);
         }
 
-        public static string EncryptString(string sourceString, string password)
+        public static string EncryptString(string sourceString, string password, string salt)
         {
             //RijndaelManagedオブジェクトを作成
             var rijndael = new RijndaelManaged();
@@ -228,7 +228,7 @@ namespace Symnity.Core.Crypto
             //パスワードから共有キーと初期化ベクタを作成
             byte[] key, iv;
             GenerateKeyFromPassword(
-                password, rijndael.KeySize, out key, rijndael.BlockSize, out iv);
+                password, rijndael.KeySize, out key, rijndael.BlockSize, out iv, salt);
             rijndael.Key = key;
             rijndael.IV = iv;
 
@@ -246,7 +246,7 @@ namespace Symnity.Core.Crypto
             return Convert.ToBase64String(encBytes);
         }
 
-        public static string DecryptString(string sourceString, string password)
+        public static string DecryptString(string sourceString, string password, string salt)
         {
             //RijndaelManagedオブジェクトを作成
             var rijndael = new RijndaelManaged();
@@ -254,7 +254,7 @@ namespace Symnity.Core.Crypto
             //パスワードから共有キーと初期化ベクタを作成
             byte[] key, iv;
             GenerateKeyFromPassword(
-                password, rijndael.KeySize, out key, rijndael.BlockSize, out iv);
+                password, rijndael.KeySize, out key, rijndael.BlockSize, out iv, salt);
             rijndael.Key = key;
             rijndael.IV = iv;
 
@@ -274,14 +274,14 @@ namespace Symnity.Core.Crypto
         }
 
         private static void GenerateKeyFromPassword(string password,
-            int keySize, out byte[] key, int blockSize, out byte[] iv)
+            int keySize, out byte[] key, int blockSize, out byte[] iv, string salt)
         {
             //パスワードから共有キーと初期化ベクタを作成する
             //saltを決める
-            byte[] salt = System.Text.Encoding.UTF8.GetBytes("saltは必ず8バイト以上");
+            byte[] saltBytes = System.Text.Encoding.UTF8.GetBytes("saltは必ず8バイト以上");
             //Rfc2898DeriveBytesオブジェクトを作成する
-            System.Security.Cryptography.Rfc2898DeriveBytes deriveBytes =
-                new System.Security.Cryptography.Rfc2898DeriveBytes(password, salt);
+            Rfc2898DeriveBytes deriveBytes =
+                new Rfc2898DeriveBytes(password, saltBytes);
             //.NET Framework 1.1以下の時は、PasswordDeriveBytesを使用する
             //System.Security.Cryptography.PasswordDeriveBytes deriveBytes =
             //    new System.Security.Cryptography.PasswordDeriveBytes(password, salt);
