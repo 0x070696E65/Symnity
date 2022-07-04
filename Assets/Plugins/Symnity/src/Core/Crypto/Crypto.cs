@@ -278,7 +278,7 @@ namespace Symnity.Core.Crypto
         {
             //パスワードから共有キーと初期化ベクタを作成する
             //saltを決める
-            byte[] saltBytes = System.Text.Encoding.UTF8.GetBytes("saltは必ず8バイト以上");
+            byte[] saltBytes = Encoding.UTF8.GetBytes(salt);
             //Rfc2898DeriveBytesオブジェクトを作成する
             Rfc2898DeriveBytes deriveBytes =
                 new Rfc2898DeriveBytes(password, saltBytes);
