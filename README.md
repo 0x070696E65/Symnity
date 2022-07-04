@@ -21,19 +21,6 @@ https://docs.symbolplatform.com/ja/getting-started/ <br>
 また、ネットワークプロパティなどはこちらをご参考ください。<br>
 https://qiita.com/nem_takanobu/items/4f50e5740318d92d7dcb
 
-# ノーコードでSymbolを使う！
-[![](https://img.youtube.com/vi/hcj6HXw9-OQ/0.jpg)](https://www.youtube.com/watch?v=hcj6HXw9-OQ)
-
-上の画像クリックでYouTubeに飛びます。この動画ではUnityをインストールし、
-プロジェクトを作成した空の状態から、Prefabを使ってノーコードでSymbolを使っている参考動画です。
-
-* トランスファートランザクション
-* モザイク残高の取得
-* WebSocketを使ってトランザクション承認を監視
-
-などを解説しています。
-コードを書いて使われる場合は以下を参考にしてください。
-
 # Note
 
 現在は自分で使うために作成していますのでバグやエラー処理などは完全ではありません。ご理解いただいた上でご利用ください。
